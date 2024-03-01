@@ -1,5 +1,6 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
+const { Circle, Triangle, Square } = require("./lib/shapes");
 
 inquirer
 	.prompt([
@@ -26,18 +27,22 @@ inquirer
 		},
 	])
 	.then((result) => {
-		const SVGContent = `<svg version="1.1"
-        width="300" height="200"
-        xmlns="http://www.w3.org/2000/svg">
-   
-     <rect width="100%" height="100%" fill="white" />
-   
-     <${result.shape} cx="150" cy="100" r="80" fill="${result.shapeColor}" />
-   
-     <text x="150" y="125" font-size="60" text-anchor="middle" fill="${result.textColor}">${result.logoName}</text>
-   
-   </svg>`;
-		fs.writeFile("./examples/logo.svg", SVGContent, (err) =>
+		console.log(result.shape);
+		let shape;
+		if (result.shape === "circle") {
+			shape = new Circle(result.shapeColor, result.textColor, result.logoName);
+		}
+		if (result.shape === "triangle") {
+			shape = new Triangle(
+				result.shapeColor,
+				result.textColor,
+				result.logoName
+			);
+		}
+		if (result.shape === "square") {
+			shape = new Square(result.shapeColor, result.textColor, result.logoName);
+		}
+		fs.writeFile("./examples/logo.svg", shape.render(), (err) =>
 			err ? console.error(err) : console.log("Generated logo.svg")
 		);
 	});
