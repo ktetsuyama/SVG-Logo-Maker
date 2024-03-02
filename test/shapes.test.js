@@ -1,4 +1,11 @@
-const { Shape, Circle, Triangle, Square } = require("../lib/shapes");
+const {
+	Shape,
+	Circle,
+	Triangle,
+	Square,
+	validateInput,
+	validateColor,
+} = require("../lib/shapes");
 
 describe("Circle", () => {
 	describe("shapeColor", () => {
@@ -98,6 +105,79 @@ describe("Square", () => {
 			const shape = new Square("SVG");
 			shape.logoName = "SVG";
 			expect(shape.renderLogoName()).toEqual(`SVG</text>`);
+		});
+	});
+});
+
+describe("validateInput", () => {
+	it("should return an error for input with fewer than 1 character", () => {
+		const noInput = [""];
+		noInput.forEach((input) => {
+			expect(validateInput(input)).toEqual("Please enter 1, 2, or 3 letters.");
+		});
+	});
+	it("should return an error for input with with more than 3 characters", () => {
+		const moreInput = ["kjre"];
+		moreInput.forEach((input) => {
+			expect(validateInput(input)).toEqual("Please enter 1, 2, or 3 letters.");
+		});
+	});
+	it("should return true for input with 1 character", () => {
+		const oneInput = ["k"];
+		oneInput.forEach((input) => {
+			expect(validateInput(input)).toEqual(true);
+		});
+	});
+	it("should return true for input with 2 characters", () => {
+		const twoInput = ["kr"];
+		twoInput.forEach((input) => {
+			expect(validateInput(input)).toEqual(true);
+		});
+	});
+	it("should return true for input with 3 characters", () => {
+		const threeInput = ["kre"];
+		threeInput.forEach((input) => {
+			expect(validateInput(input)).toEqual(true);
+		});
+	});
+});
+
+describe("validateColor", () => {
+	it("should return true for valid named colors", () => {
+		const namedColors = [
+			"red",
+			"green",
+			"blue",
+			"black",
+			"gray",
+			"purple",
+			"yellow",
+			"orange",
+			"white",
+		];
+		namedColors.forEach((color) => {
+			expect(validateColor(color)).toEqual(true);
+		});
+	});
+	it("should return true for valid hexadecimal colors", () => {
+		const hexColors = [
+			"#FFFFFF",
+			"#FF0000",
+			"#FFF",
+			"#000000",
+			"#080808",
+			"#FFA500",
+		];
+		hexColors.forEach((color) => {
+			expect(validateColor(color)).toEqual(true);
+		});
+	});
+	it("should return an error message for invalid inputs", () => {
+		const invalidInputs = ["invalid", "abcdefg"];
+		invalidInputs.forEach((input) => {
+			expect(validateColor(input)).toEqual(
+				"Please enter a valid color name or hexadecimal value."
+			);
 		});
 	});
 });

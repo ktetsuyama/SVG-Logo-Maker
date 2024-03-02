@@ -1,6 +1,12 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
-const { Circle, Triangle, Square } = require("./lib/shapes");
+const {
+	Circle,
+	Triangle,
+	Square,
+	validateInput,
+	validateColor,
+} = require("./lib/shapes");
 
 inquirer
 	.prompt([
@@ -8,11 +14,14 @@ inquirer
 			type: "input",
 			message: "What three letters would you like for your logo?",
 			name: "logoName",
+			validate: validateInput,
 		},
 		{
 			type: "input",
-			message: "What color would you like your text to be?",
+			message:
+				"What color would you like your text to be? You may enter a color by word (red, orange, yellow, green, blue, purple, black, white) or by hexadecimal.",
 			name: "textColor",
+			validate: validateColor,
 		},
 		{
 			type: "list",
@@ -22,8 +31,10 @@ inquirer
 		},
 		{
 			type: "input",
-			message: "What color would you like your shape to be?",
+			message:
+				"What color would you like your shape to be? You may enter a color by word (red, orange, yellow, green, blue, purple, black, white) or by hexadecimal.",
 			name: "shapeColor",
+			validate: validateColor,
 		},
 	])
 	.then((result) => {
